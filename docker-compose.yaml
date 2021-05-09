@@ -1,0 +1,22 @@
+version: "3"
+services:
+    agent:
+      build: 
+        context: ./ubuntu
+        args:
+          USERNAME: user
+          USERPASS: newpassword
+          USER_ID: 1000
+          GROUP_ID: 1000
+      container_name: test_ubuntu
+      restart: always
+      tty: true
+      ports:
+        - "10000:22"
+      logging:
+        options:
+          max-size: "100k"
+          max-file: "3"
+      volumes:
+        - ${STORAGE_PATH}:/data
+        - ${HOME_PATH}:/home/user
