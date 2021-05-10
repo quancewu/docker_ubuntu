@@ -1,0 +1,18 @@
+FROM ubuntu:focal
+
+ARG USERNAME
+ARG USERPASS
+ARG USER_ID
+ARG GROUP_ID
+
+RUN apt update && apt install  openssh-server sudo -y
+
+RUN useradd -rm -d /home/$USERNAME -s /bin/bash -G sudo -u $USER_ID $USERNAME
+
+RUN  echo $USERNAME:$USERPASS | chpasswd
+RUN /usr/bin/ssh-keygen -A 
+RUN service ssh start
+
+EXPOSE 22
+# USER $USERNAME
+CMD ["/usr/sbin/sshd","-D"]
